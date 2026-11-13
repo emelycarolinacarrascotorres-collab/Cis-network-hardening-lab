@@ -1,0 +1,13 @@
+{
+  "params": {
+    "mgmt_network": "10.25.20.0 0.0.0.255",
+    "fw_trusthost": "10.25.20.0 255.255.255.0",
+    "fw_hostname": "FW1",
+    "syslog_server": "10.25.20.10"
+  },
+  "devices": [
+    {"name": "R1",  "host": "10.25.20.1", "role": "router",   "device_type": "cisco_ios"},
+    {"name": "SW1", "host": "10.25.20.2", "role": "switch",   "device_type": "cisco_ios"},
+    {"name": "FW1", "host": "10.25.0.2",  "role": "firewall", "device_type": "fortinet"}
+  ]
+}

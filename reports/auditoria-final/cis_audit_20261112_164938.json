@@ -1,0 +1,622 @@
+{
+  "generated": "2026-11-12T16:49:38",
+  "mode": "audit",
+  "benchmark": "CIS Benchmarks: Cisco IOS y FortiGate (selección de controles)",
+  "devices": [
+    {
+      "name": "R1",
+      "host": "10.25.20.1",
+      "role": "router",
+      "applied": [],
+      "errors": [],
+      "post": null,
+      "pre": [
+        {
+          "id": "MGT-01",
+          "title": "Habilitar 'aaa new-model'",
+          "ref": "1.1.1",
+          "why": "Activa AAA: base para autenticación por listas de métodos y trazabilidad de accesos.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-02",
+          "title": "Definir 'aaa authentication login default'",
+          "ref": "1.1.2",
+          "why": "Obliga a que consola y VTY usen un método de autenticación explícito (local) en vez de contraseñas de línea.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-03",
+          "title": "Usar 'enable secret' (sin 'enable password')",
+          "ref": "1.4.1",
+          "why": "El modo privilegiado debe protegerse con hash fuerte (scrypt) y no con una contraseña reversible.",
+          "status": "MANUAL",
+          "detail": "Existe 'enable password' (reversible / texto claro) -> requiere acción manual",
+          "fix": []
+        },
+        {
+          "id": "MGT-04",
+          "title": "Habilitar 'service password-encryption'",
+          "ref": "1.4.2",
+          "why": "Evita que contraseñas de línea aparezcan en texto claro al ver la configuración (mitigación básica).",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-05",
+          "title": "Usuarios locales con 'secret' (no 'password')",
+          "ref": "1.4.3",
+          "why": "Un hash fuerte protege las credenciales locales si se filtra la configuración. Requiere acción manual (no se conoce la clave).",
+          "status": "MANUAL",
+          "detail": "Usuarios sin 'secret': admin -> requiere acción manual",
+          "fix": []
+        },
+        {
+          "id": "MGT-06",
+          "title": "exec-timeout <= 10 min en consola",
+          "ref": "1.2.7",
+          "why": "Cierra sesiones de consola abandonadas; reduce el riesgo de acceso físico oportunista.",
+          "status": "FAIL",
+          "detail": "No cumple: line con 0",
+          "fix": [
+            "line con 0",
+            " exec-timeout 10 0"
+          ]
+        },
+        {
+          "id": "MGT-07",
+          "title": "exec-timeout <= 10 min en VTY",
+          "ref": "1.2.8",
+          "why": "Cierra sesiones remotas inactivas; reduce la ventana para secuestro de sesión.",
+          "status": "FAIL",
+          "detail": "No cumple: line vty 0 4; line vty 5 15",
+          "fix": [
+            "line vty 0 4",
+            " exec-timeout 10 0",
+            "line vty 5 15",
+            " exec-timeout 10 0"
+          ]
+        },
+        {
+          "id": "MGT-08",
+          "title": "'transport input ssh' en VTY",
+          "ref": "1.2.2",
+          "why": "Telnet envía credenciales en claro; solo se permite SSH (cifrado).",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-09",
+          "title": "ACL de acceso (access-class) en VTY",
+          "ref": "1.2.4 / 1.2.5",
+          "why": "Solo la red de gestión puede intentar conectarse por SSH al dispositivo (reduce superficie de ataque).",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-10",
+          "title": "Configurar 'banner login'",
+          "ref": "1.3.2",
+          "why": "Aviso legal de acceso autorizado: base legal para sancionar accesos no autorizados.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-11",
+          "title": "Eliminar SNMP communities 'public'/'private'",
+          "ref": "1.5.2 / 1.5.3",
+          "why": "Son las primeras cadenas que prueba cualquier atacante; 'private' (RW) permite modificar el equipo.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-12",
+          "title": "Deshabilitar servidor HTTP ('no ip http server')",
+          "ref": "2.1.x",
+          "why": "HTTP es texto claro y expande la superficie de ataque; la gestión se hace por SSH.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-13",
+          "title": "SSH versión 2",
+          "ref": "2.1.1.x",
+          "why": "SSHv1 tiene debilidades criptográficas conocidas.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-14",
+          "title": "'ip ssh time-out' <= 60 s",
+          "ref": "2.1.1.2",
+          "why": "Limita el tiempo para completar la autenticación SSH (mitiga conexiones colgadas / DoS).",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-15",
+          "title": "'ip ssh authentication-retries' <= 3",
+          "ref": "2.1.1.3",
+          "why": "Limita intentos de contraseña por sesión SSH (mitiga fuerza bruta).",
+          "status": "FAIL",
+          "detail": "Debe ser <= 3 (no configurado)",
+          "fix": [
+            "ip ssh authentication-retries 3"
+          ]
+        },
+        {
+          "id": "CTL-01",
+          "title": "Deshabilitar CDP ('no cdp run')",
+          "ref": "2.1.2",
+          "why": "CDP revela modelo, IOS e IPs a cualquier vecino L2 (reconocimiento).",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "CTL-02",
+          "title": "'no ip bootp server'",
+          "ref": "2.1.3",
+          "why": "Servicio innecesario que expone el equipo a abuso/descarga de configuración.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "CTL-03",
+          "title": "'no service pad'",
+          "ref": "2.1.8",
+          "why": "PAD (X.25) es un servicio heredado y sin uso; se elimina para reducir superficie.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "CTL-04",
+          "title": "'logging buffered' >= 16384",
+          "ref": "2.2.2",
+          "why": "Un buffer mayor conserva eventos para análisis forense local.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "CTL-05",
+          "title": "Enviar logs a servidor syslog",
+          "ref": "2.2.4",
+          "why": "Logs centralizados no se pierden si el equipo se reinicia o es comprometido.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "CTL-06",
+          "title": "Timestamps con fecha/hora en logs y debug",
+          "ref": "2.2.6",
+          "why": "Sin marca de tiempo no se pueden correlacionar eventos durante un incidente.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "DAT-01",
+          "title": "'no ip source-route'",
+          "ref": "3.1.1",
+          "why": "Impide que el origen dicte la ruta del paquete (técnica usada para evadir controles).",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "DAT-02",
+          "title": "'no ip proxy-arp' en interfaces L3",
+          "ref": "3.1.x",
+          "why": "Evita que el router responda ARP por otros hosts (suplantación / fuga entre segmentos).",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        }
+      ],
+      "score_pre": 78.3
+    },
+    {
+      "name": "SW1",
+      "host": "10.25.20.2",
+      "role": "switch",
+      "applied": [],
+      "errors": [],
+      "post": null,
+      "pre": [
+        {
+          "id": "MGT-01",
+          "title": "Habilitar 'aaa new-model'",
+          "ref": "1.1.1",
+          "why": "Activa AAA: base para autenticación por listas de métodos y trazabilidad de accesos.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-02",
+          "title": "Definir 'aaa authentication login default'",
+          "ref": "1.1.2",
+          "why": "Obliga a que consola y VTY usen un método de autenticación explícito (local) en vez de contraseñas de línea.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-03",
+          "title": "Usar 'enable secret' (sin 'enable password')",
+          "ref": "1.4.1",
+          "why": "El modo privilegiado debe protegerse con hash fuerte (scrypt) y no con una contraseña reversible.",
+          "status": "MANUAL",
+          "detail": "Existe 'enable password' (reversible / texto claro) -> requiere acción manual",
+          "fix": []
+        },
+        {
+          "id": "MGT-04",
+          "title": "Habilitar 'service password-encryption'",
+          "ref": "1.4.2",
+          "why": "Evita que contraseñas de línea aparezcan en texto claro al ver la configuración (mitigación básica).",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-05",
+          "title": "Usuarios locales con 'secret' (no 'password')",
+          "ref": "1.4.3",
+          "why": "Un hash fuerte protege las credenciales locales si se filtra la configuración. Requiere acción manual (no se conoce la clave).",
+          "status": "MANUAL",
+          "detail": "Usuarios sin 'secret': admin -> requiere acción manual",
+          "fix": []
+        },
+        {
+          "id": "MGT-06",
+          "title": "exec-timeout <= 10 min en consola",
+          "ref": "1.2.7",
+          "why": "Cierra sesiones de consola abandonadas; reduce el riesgo de acceso físico oportunista.",
+          "status": "FAIL",
+          "detail": "No cumple: line con 0",
+          "fix": [
+            "line con 0",
+            " exec-timeout 10 0"
+          ]
+        },
+        {
+          "id": "MGT-07",
+          "title": "exec-timeout <= 10 min en VTY",
+          "ref": "1.2.8",
+          "why": "Cierra sesiones remotas inactivas; reduce la ventana para secuestro de sesión.",
+          "status": "FAIL",
+          "detail": "No cumple: line vty 0 4",
+          "fix": [
+            "line vty 0 4",
+            " exec-timeout 10 0"
+          ]
+        },
+        {
+          "id": "MGT-08",
+          "title": "'transport input ssh' en VTY",
+          "ref": "1.2.2",
+          "why": "Telnet envía credenciales en claro; solo se permite SSH (cifrado).",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-09",
+          "title": "ACL de acceso (access-class) en VTY",
+          "ref": "1.2.4 / 1.2.5",
+          "why": "Solo la red de gestión puede intentar conectarse por SSH al dispositivo (reduce superficie de ataque).",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-10",
+          "title": "Configurar 'banner login'",
+          "ref": "1.3.2",
+          "why": "Aviso legal de acceso autorizado: base legal para sancionar accesos no autorizados.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-11",
+          "title": "Eliminar SNMP communities 'public'/'private'",
+          "ref": "1.5.2 / 1.5.3",
+          "why": "Son las primeras cadenas que prueba cualquier atacante; 'private' (RW) permite modificar el equipo.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-12",
+          "title": "Deshabilitar servidor HTTP ('no ip http server')",
+          "ref": "2.1.x",
+          "why": "HTTP es texto claro y expande la superficie de ataque; la gestión se hace por SSH.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-13",
+          "title": "SSH versión 2",
+          "ref": "2.1.1.x",
+          "why": "SSHv1 tiene debilidades criptográficas conocidas.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-14",
+          "title": "'ip ssh time-out' <= 60 s",
+          "ref": "2.1.1.2",
+          "why": "Limita el tiempo para completar la autenticación SSH (mitiga conexiones colgadas / DoS).",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "MGT-15",
+          "title": "'ip ssh authentication-retries' <= 3",
+          "ref": "2.1.1.3",
+          "why": "Limita intentos de contraseña por sesión SSH (mitiga fuerza bruta).",
+          "status": "FAIL",
+          "detail": "Debe ser <= 3 (no configurado)",
+          "fix": [
+            "ip ssh authentication-retries 3"
+          ]
+        },
+        {
+          "id": "CTL-01",
+          "title": "Deshabilitar CDP ('no cdp run')",
+          "ref": "2.1.2",
+          "why": "CDP revela modelo, IOS e IPs a cualquier vecino L2 (reconocimiento).",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "CTL-02",
+          "title": "'no ip bootp server'",
+          "ref": "2.1.3",
+          "why": "Servicio innecesario que expone el equipo a abuso/descarga de configuración.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "CTL-03",
+          "title": "'no service pad'",
+          "ref": "2.1.8",
+          "why": "PAD (X.25) es un servicio heredado y sin uso; se elimina para reducir superficie.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "CTL-04",
+          "title": "'logging buffered' >= 16384",
+          "ref": "2.2.2",
+          "why": "Un buffer mayor conserva eventos para análisis forense local.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "CTL-05",
+          "title": "Enviar logs a servidor syslog",
+          "ref": "2.2.4",
+          "why": "Logs centralizados no se pierden si el equipo se reinicia o es comprometido.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "CTL-06",
+          "title": "Timestamps con fecha/hora en logs y debug",
+          "ref": "2.2.6",
+          "why": "Sin marca de tiempo no se pueden correlacionar eventos durante un incidente.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "DAT-02",
+          "title": "'no ip proxy-arp' en interfaces L3",
+          "ref": "3.1.x",
+          "why": "Evita que el router responda ARP por otros hosts (suplantación / fuga entre segmentos).",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "L2-01",
+          "title": "BPDU Guard por defecto en puertos PortFast",
+          "ref": "L2 (extra)",
+          "why": "Un puerto de acceso que reciba BPDUs (switch rogue) se bloquea, protegiendo la raíz STP.",
+          "status": "FAIL",
+          "detail": "No cumple",
+          "fix": [
+            "spanning-tree portfast bpduguard default"
+          ]
+        },
+        {
+          "id": "L2-02",
+          "title": "Port-security en puertos de acceso",
+          "ref": "L2 (extra)",
+          "why": "Limita la cantidad de MAC por puerto (mitiga MAC flooding y conexión de equipos no autorizados).",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        }
+      ],
+      "score_pre": 75.0
+    },
+    {
+      "name": "FW1",
+      "host": "10.25.0.2",
+      "role": "firewall",
+      "applied": [],
+      "errors": [],
+      "post": null,
+      "pre": [
+        {
+          "id": "FGT-01",
+          "title": "Hostname distinto al valor por defecto",
+          "ref": "FortiGate · Sistema",
+          "why": "Un nombre propio facilita inventario y correlación de logs; el nombre por defecto delata el modelo.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "FGT-02",
+          "title": "Banner previo al login habilitado",
+          "ref": "FortiGate · Sistema",
+          "why": "Aviso legal de acceso autorizado antes de autenticarse.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "FGT-03",
+          "title": "Timeout de inactividad de administración <= 5 min",
+          "ref": "FortiGate · Sistema",
+          "why": "Cierra sesiones de administración abandonadas.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "FGT-04",
+          "title": "Strong-crypto habilitado",
+          "ref": "FortiGate · Sistema",
+          "why": "Fuerza protocolos y cifrados robustos (TLS/SSH) en la administración.",
+          "status": "FAIL",
+          "detail": "'strong-crypto' no visible (use 'show full-configuration')",
+          "fix": [
+            "config system global",
+            "set strong-crypto enable",
+            "end"
+          ]
+        },
+        {
+          "id": "FGT-05",
+          "title": "Bloqueo de admin: umbral <= 3 intentos",
+          "ref": "FortiGate · Sistema",
+          "why": "Mitiga fuerza bruta contra las cuentas de administración.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "FGT-06",
+          "title": "Bloqueo de admin: duración >= 900 s",
+          "ref": "FortiGate · Sistema",
+          "why": "Un bloqueo suficientemente largo frena los ataques de adivinación de contraseñas.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "FGT-07",
+          "title": "Administradores con 'trusthost' restringido",
+          "ref": "FortiGate · Sistema",
+          "why": "Cada cuenta admin solo debe poder iniciar sesión desde la red de gestión (evita 0.0.0.0/0).",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "FGT-08",
+          "title": "Sin Telnet ni HTTP en 'allowaccess' de interfaces",
+          "ref": "FortiGate · Red",
+          "why": "Telnet y HTTP viajan en claro; la administración debe ser solo por HTTPS/SSH.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "FGT-09",
+          "title": "Política de contraseñas habilitada (longitud y complejidad)",
+          "ref": "FortiGate · Sistema",
+          "why": "Contraseñas largas y complejas reducen el éxito de ataques de diccionario.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "FGT-10",
+          "title": "Agente SNMP deshabilitado",
+          "ref": "FortiGate · Sistema",
+          "why": "Si no se usa, el agente SNMP solo agrega superficie de ataque (y v1/v2c no cifra).",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "FGT-11",
+          "title": "Logs enviados a servidor syslog",
+          "ref": "FortiGate · Logging",
+          "why": "Logs centralizados no se pierden si el equipo se compromete o reinicia.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "FGT-12",
+          "title": "Sincronización NTP habilitada",
+          "ref": "FortiGate · Sistema",
+          "why": "Hora correcta es indispensable para correlacionar eventos.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        },
+        {
+          "id": "FGT-13",
+          "title": "Logging de tráfico en todas las políticas",
+          "ref": "FortiGate · Políticas",
+          "why": "Sin 'logtraffic all' no hay registro del tráfico permitido para análisis forense.",
+          "status": "N/A",
+          "detail": "sin entradas en 'firewall policy'",
+          "fix": []
+        },
+        {
+          "id": "FGT-14",
+          "title": "Sin políticas ANY-ANY-ALL con 'accept'",
+          "ref": "FortiGate · Políticas",
+          "why": "Una política que permite todo origen, destino y servicio anula el firewall. Requiere diseño manual (qué sí se permite).",
+          "status": "N/A",
+          "detail": "sin entradas en 'firewall policy'",
+          "fix": []
+        },
+        {
+          "id": "FGT-15",
+          "title": "Auto-instalación por USB deshabilitada",
+          "ref": "FortiGate · Sistema",
+          "why": "Evita que alguien con acceso físico cargue configuración o firmware desde un USB.",
+          "status": "PASS",
+          "detail": "",
+          "fix": []
+        }
+      ],
+      "score_pre": 92.3
+    }
+  ]
+}
