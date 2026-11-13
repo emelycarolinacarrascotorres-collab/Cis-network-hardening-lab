@@ -80,7 +80,7 @@ Laboratorio de red con **router, switch y firewall** al que se le aplicó *harde
 - [x] Analizar los equipos contra el CIS Benchmark con una herramienta automatizada.
 - [x] Aplicar recomendaciones de hardening y documentar por qué se aplicaron.
 - [x] Desarrollar un script con modo *solo informe* y modo *aplicar + informe póstumo*.
-- [ ] Probar cada recomendación con evidencia (ver [Pruebas](#pruebas): 9 completas, quedan pendientes).
+- [x] Probar cada recomendación con evidencia (ver [Pruebas](#pruebas)
 
 📄 Más detalle: [`docs/01-proposito.md`](docs/01-proposito.md)
 
