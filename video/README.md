@@ -4,17 +4,6 @@
 
 **Enlace:** <https://youtu.be/1FThlVdLoFM>
 
-**Duración:** [AGREGAR]  ·  **Plataforma:** YouTube
-
-## Contenido del video
-
-| Tiempo | Sección |
-|---|---|
-| [00:00] | [AGREGAR: presentación y topología] |
-| [00:00] | [AGREGAR: audit inicial con el script] |
-| [00:00] | [AGREGAR: aplicación del hardening] |
-| [00:00] | [AGREGAR: pruebas y resultados] |
-
 ## Cómo mostrarlo en el README
 
 - **Enlace con miniatura (recomendado):** guarde una captura como `video/thumbnail.png` y use
