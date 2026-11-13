@@ -18,7 +18,3 @@ Informes generados por [`scripts/cis_hardening.py`](../scripts/cis_hardening.py)
 
 > Los `.html` de `auditoria-inicial`, `auditoria-final` y `comparativa` se generaron a partir de los JSON con la función `html_report` del propio script.
 > `reports/backups/` (respaldos de configuración que crea el script) está excluido por `.gitignore`.
-
-## Pendiente
-
-- El informe de la ejecución `remediate` (con comandos aplicados y errores del equipo), si existe.
