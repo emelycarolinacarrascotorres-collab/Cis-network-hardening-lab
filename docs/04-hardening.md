@@ -60,12 +60,3 @@ Cada ficha incluye identificador, dispositivo, riesgo, recomendación, configura
 | `MGT-03` `enable secret` | Solo se automatiza si se define `CIS_ENABLE_NEW`; no se escriben claves en archivos ni informes. |
 | `MGT-05` usuarios con `secret` | El script no conoce la contraseña, por lo que no puede generar el hash. |
 | `FGT-14` política ANY-ANY-ALL | Decidir qué tráfico se permite es una decisión de diseño. |
-
-## Limitaciones conocidas del script
-
-- **Valores por defecto de IOS (confirmado en configuración y en los equipos):** `exec-timeout 10 0` y `ip ssh authentication-retries 3` no aparecen en `show running-config` cuando son el valor por defecto, y el script interpreta la ausencia como incumplimiento (`MGT-06`, `MGT-07`, `MGT-15`). En `R1-despues.cfg` la línea `exec-timeout 0 0` de la consola desapareció.
-- **Sintaxis de IOS 15.2 (confirmado en configuración y en el equipo):** el switch muestra `spanning-tree portfast edge bpduguard default`; el script busca `spanning-tree portfast bpduguard default` (`L2-01`).
-- **FortiOS 7.0.9:** `strong-crypto` no aparece en `show full-configuration` (`FGT-04`).
-- **FortiGate con VDOM** no está soportado.
-
-> La numeración de Cisco corresponde a la versión 4.x del *CIS Cisco IOS 15 Benchmark* y puede variar según la versión. Los `FGT-xx` no llevan número de sección.
