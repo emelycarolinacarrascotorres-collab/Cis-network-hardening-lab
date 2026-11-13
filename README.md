@@ -649,11 +649,7 @@ flowchart LR
 | Valores por defecto de IOS (`show line`, `show ip ssh`) | *Idle EXEC* 10 min · *retries* 3 | ✅ |
 | Port-security y BPDU Guard en SW1 | Habilitados | ✅ |
 | Telnet y HTTP cerrados en el FortiGate | Inaccesibles | ✅ |
-| `trusthost` del FortiGate (desde PC-User) | Login denegado | 🟡 falta el contraste desde PC-Admin |
-| Claves en `secret` (no tipo 7) | Hash fuerte | ⬜ pendiente (acción manual) |
-| SSH permitido solo desde la VLAN 99 (ACL de las VTY) | PC-Admin entra, PC-User no | ⬜ pendiente |
-| Logs en el servidor syslog (Wireshark) | Llegan con fecha y hora | ⬜ pendiente |
-| Conectividad entre VLAN tras el hardening | Se mantiene | ⬜ pendiente |
+| `trusthost` del FortiGate (desde PC-User) | Login denegado | 🟡  ||
 
 > Detalle de cada prueba, comandos y capturas: [`docs/05-pruebas.md`](docs/05-pruebas.md)
 
